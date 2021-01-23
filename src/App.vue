@@ -11,6 +11,7 @@
 <script>
 import Header from "./components/Header";
 import DataTable from './components/DataTable'
+import UserData from '../data.json'
 export default {
 	name: "App",
 	components: {
@@ -20,25 +21,22 @@ export default {
 	data() {
 		return {
 			tableValues: {
-					title:['TRANSACTION ID','TYPE','COST','RATE','DATE',''],
-					keys:['id','type','cost','rate','date'],
-					data:[{
-						id:'00TX29283931',
-						type:'Amazon',
-						cost:'$299',
-						rate:'₦150,000',
-						date:'11-12-2020'
-					},
-					{
-						id:'79TX99012500',
-						type:'Apple',
-						cost:'$150',
-						rate:'₦50,000',
-						date:'13-04-2021'
-					}]
+					title:['ID','NAME','EMAIL','GENDER',''],
+					keys:['name','email','gender'],
+					data:[]
 				}
 		}
 	},
+	methods: {
+		// async getUsers() {
+		// 	let url = '../data.json';
+		// 	let res = await fetch(url);
+		// 	console.log(res);
+		// }
+	},
+mounted () {
+	this.tableValues.data = UserData;
+},
 };
 </script>
 
