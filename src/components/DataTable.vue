@@ -16,7 +16,7 @@
 					</td>
 					<td v-if="item.country">{{item.country}}</td>
 					<td v-else>
-						<button @click="$emit('guessCountry',{id:i, name:item.name})" :disabled="isGuessing.status && isGuessing.id === i">
+						<button @click="$emit('guessCountry',{id:item.id, name:item.name})" :disabled="isGuessing.status && isGuessing.id === i">
 							<span v-if="isGuessing.status && isGuessing.id === i">Guessing...</span>
 							<span v-else>Guess Country</span>
 						</button>

@@ -37,7 +37,7 @@ export default {
 			let data = await res.json();
 			let regionNames = new Intl.DisplayNames(["en"], { type: "region" });
 			let country = data.country[0] ? regionNames.of(data.country[0].country_id) : 'None';
-			this.$set(this.tableValues.data[user.id], 'country', country);
+			this.$set(this.tableValues.data[user.id-1], 'country', country);
 			this.updateIsGuessing({id:user.id, status:false});
 		},
 		...mapMutations([
