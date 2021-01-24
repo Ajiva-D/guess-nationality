@@ -31,14 +31,14 @@ export default {
 	},
 	methods: {
 		async guessCountry(user) {
-			this.updateIsGuessing({id:user.id, status:true});
+			this.updateIsGuessing({id:user.index, status:true});
 			let url = `https://api.nationalize.io?name=${user.name}`;
 			let res = await fetch(url);
 			let data = await res.json();
 			let regionNames = new Intl.DisplayNames(["en"], { type: "region" });
 			let country = data.country[0] ? regionNames.of(data.country[0].country_id) : 'None';
-			this.$set(this.tableValues.data[user.id-1], 'country', country);
-			this.updateIsGuessing({id:user.id, status:false});
+			this.$set(this.tableValues.data[user.userID-1], 'country', country);
+			this.updateIsGuessing({id:user.index, status:false});
 		},
 		...mapMutations([
 			'updateIsGuessing', //also supports payload `this.nameOfMutation(amount)` 
@@ -67,5 +67,15 @@ main {
 		font-size: 2rem;
 		margin-bottom: 20px;
 	}
+}
+/* @media screen and (min-width:768px) and (max-width:999px){
+	main{
+		padding:
+	}
+} */
+@media screen and (max-width:999px){
+main{
+	padding:4rem 2rem;
+}
 }
 </style>

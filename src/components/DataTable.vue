@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="table-con">
 		<table>
 			<thead>
 				<tr>
@@ -16,7 +16,7 @@
 					</td>
 					<td v-if="item.country">{{item.country}}</td>
 					<td v-else>
-						<button @click="$emit('guessCountry',{id:item.id, name:item.name})" :disabled="isGuessing.status && isGuessing.id === i">
+						<button @click="$emit('guessCountry',{index:i,userID:item.id, name:item.name})" :disabled="isGuessing.status && isGuessing.id === i">
 							<span v-if="isGuessing.status && isGuessing.id === i">Guessing...</span>
 							<span v-else>Guess Country</span>
 						</button>
@@ -72,6 +72,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.table-con{
+	overflow-x: auto;
+}
 table {
 	border: 1px solid #ededed;
 	width: 100%;
