@@ -3,40 +3,50 @@
 		<Header />
 		<main>
 			<h2>Guess your users Nationality</h2>
-			<DataTable :tableValues="tableValues"/>
+			<DataTable :tableValues="tableValues" @guessCountry="guessCountry($event)" />
 		</main>
 	</div>
 </template>
 
 <script>
 import Header from "./components/Header";
-import DataTable from './components/DataTable'
-import UserData from '../data.json'
+import DataTable from "./components/DataTable";
+import UserData from "../data.json";
+import { mapMutations } from 'vuex';
+
 export default {
 	name: "App",
 	components: {
 		Header,
-		DataTable
+		DataTable,
 	},
 	data() {
 		return {
-			tableValues: {
-					title:['ID','NAME','EMAIL','GENDER',''],
-					keys:['name','email','gender'],
-					data:[]
-				}
-		}
+			tableValues:{
+				titles: ["ID", "NAME", "EMAIL", "GENDER", "COUNTRY"],
+				keys: ["name", "email", "gender"],
+				data: [],
+			}
+		};
 	},
 	methods: {
-		// async getUsers() {
-		// 	let url = '../data.json';
-		// 	let res = await fetch(url);
-		// 	console.log(res);
-		// }
+		async guessCountry(user) {
+			this.updateIsGuessing({id:user.id, status:true});
+			let url = `https://api.nationalize.io?name=${user.name}`;
+			let res = await fetch(url);
+			let data = await res.json();
+			let regionNames = new Intl.DisplayNames(["en"], { type: "region" });
+			let country = data.country[0] ? regionNames.of(data.country[0].country_id) : 'None';
+			this.$set(this.tableValues.data[user.id], 'country', country);
+			this.updateIsGuessing({id:user.id, status:false});
+		},
+		...mapMutations([
+			'updateIsGuessing', //also supports payload `this.nameOfMutation(amount)` 
+		])
 	},
-mounted () {
-	this.tableValues.data = UserData;
-},
+	mounted() {
+		this.tableValues.data = UserData;
+	},
 };
 </script>
 
@@ -51,11 +61,11 @@ body,
 	font-family: "Inter", sans-serif;
 	margin: 0;
 }
-main{
-	padding:4rem;
-	h2{
-		font-size:2rem;
-		margin-bottom:20px;
+main {
+	padding: 4rem;
+	h2 {
+		font-size: 2rem;
+		margin-bottom: 20px;
 	}
 }
 </style>

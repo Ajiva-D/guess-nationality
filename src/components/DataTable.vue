@@ -3,7 +3,7 @@
 		<table>
 			<thead>
 				<tr>
-					<th v-for="(title, index) in tableValues.title" :key="index">
+					<th v-for="(title, index) in tableValues.titles" :key="index">
 						{{ title }}
 					</th>
 				</tr>
@@ -14,8 +14,12 @@
 					<td v-for="arrayKey in tableValues.keys" :key="arrayKey">
 						{{ item[arrayKey] }}
 					</td>
-					<td>
-						<button>Guess Country</button>
+					<td v-if="item.country">{{item.country}}</td>
+					<td v-else>
+						<button @click="$emit('guessCountry',{id:i, name:item.name})" :disabled="isGuessing.status && isGuessing.id === i">
+							<span v-if="isGuessing.status && isGuessing.id === i">Guessing...</span>
+							<span v-else>Guess Country</span>
+						</button>
 					</td>
 				</tr>
 			</tbody>
@@ -31,6 +35,8 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
+
 export default {
 	props: {
 		tableValues: {
@@ -58,6 +64,9 @@ export default {
 			let offsetEnd = this.offset + 10;
 			return this.tableValues.data.slice(this.offset, offsetEnd);
 		},
+		...mapState([
+			'isGuessing',
+		])
 	},
 };
 </script>
@@ -84,7 +93,13 @@ table {
 		color: #fff;
 		padding: 10px 20px;
 		border: none;
+		width:200px;
+		&:disabled{
+		background-color: #e07c5e;
+		color:#dbd7d7;
 	}
+	}
+	
 }
 .pagination-btns {
 	margin-top: 30px;
